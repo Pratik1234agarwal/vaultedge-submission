@@ -13,16 +13,20 @@ def hello_world():
 
 @app.route('/rotate-pdf',methods=['POST'])
 def rotate():
-    data = request.get_json()
-    print(data)
 
-    url = data['file_path']
-    angle = data['angle_of_rotation']
-    page_number = data['page_number']
+    try:
+        data = request.get_json()
+        print(data)
 
-    rotatepdf(url,int(page_number),int(angle))
+        url = data['file_path']
+        angle = data['angle_of_rotation']
+        page_number = data['page_number']
 
-    return 'Pdf Rotated Successfully'
+        rotatepdf(url,int(page_number),int(angle))
+
+        return 'Pdf Rotated Successfully'
+    except Exception:
+        return 'There was some problem encountered while rotating the pdf, check if the file is of the right format'
 
 
 
