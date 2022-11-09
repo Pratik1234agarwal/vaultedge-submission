@@ -1,12 +1,28 @@
-from flask import Flask 
+from flask import Flask,redirect,request
 import requests
 import PyPDF2 
+import json
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
     return 'hello world'
+
+
+
+@app.route('/rotate-pdf',methods=['POST'])
+def rotate():
+    data = request.get_json()
+    print(data)
+
+    url = data['file_path']
+    angle = data['angle_of_rotation']
+    page_number = data['page_number']
+
+    rotatepdf(url,int(page_number),int(angle))
+
+    return 'Pdf Rotated Successfully'
 
 
 
@@ -38,4 +54,7 @@ def rotatepdf(url,page_number,angle):
     pdf_out.close()
     pdf_in.close()
 
-rotatepdf('https://bitcoin.org/bitcoin.pdf',2,180)
+# rotatepdf('https://bitcoin.org/bitcoin.pdf',2,180)
+
+if __name__ == '__main__':
+    app.run()
